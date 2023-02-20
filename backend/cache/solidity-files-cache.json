@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/clementciron/Desktop/kickstart2/backend/contracts/Lock.sol": {
+      "lastModificationDate": 1676500226082,
+      "contentHash": "47502cd497be47d6dc2d44f836bd55dd",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.15"
+      ],
+      "artifacts": [
+        "Campaign_contract",
+        "Factory"
+      ]
+    }
+  }
+}

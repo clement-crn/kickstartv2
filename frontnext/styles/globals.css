@@ -1,7 +1,13 @@
+html {
+    margin-top: 30px;
+}
+
 .index-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+}
+
+.index-right {
+    margin-top: 105px;
 }
 
 button {

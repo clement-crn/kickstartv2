@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FactoryAbi } from "../../backend/abis";
 import { Card } from "semantic-ui-react";
 import Link from "next/link";
+import Layout from "@/components/Layout";
 
 export default function App() {
     const [myList, setMyList] = useState([]);
@@ -39,19 +40,28 @@ export default function App() {
     };
 
     return (
-        <div className="index-container">
-            <button onClick={getListAdresses}>Afficher les campagnes</button>
-            <ul>
-                {myList.map((address) => (
-                    <li className="index-ul" key={address}>
-                        <Link href={`/campaign/${address}`}>
-                            {address}
-                            <br></br>Voir la campagne
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-            <button onClick={createCampaign}>Creer une campagne</button>
-        </div>
+        <Layout>
+            <div className="index-container">
+                <div className="index-left">
+                    <button onClick={getListAdresses}>
+                        Afficher les campagnes
+                    </button>
+                    <h3>Campagnes ouvertes:</h3>
+                    <ul>
+                        {myList.map((address) => (
+                            <li className="index-ul" key={address}>
+                                <Link href={`/campaign/${address}`}>
+                                    {address}
+                                    <br></br>Voir la campagne
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="index-right">
+                    <button onClick={createCampaign}>Creer une campagne</button>
+                </div>
+            </div>
+        </Layout>
     );
 }

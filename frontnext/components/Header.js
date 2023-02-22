@@ -1,45 +1,21 @@
-import React, { Component } from "react";
-import { Input, Menu, Segment } from "semantic-ui-react";
+import React from "react";
+import { Menu, Icon } from "semantic-ui-react";
+import { useRouter } from "next/router";
 import "semantic-ui-css/semantic.min.css";
-import Link from "next/link";
-
-export default class MenuExampleBasic extends Component {
-    state = {};
-
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-
-    render() {
-        const { activeItem } = this.state;
-
-        return (
-            <Menu>
-                <Menu.Item
-                    name="KickStarteur"
-                    active={activeItem === "KickStarteur"}
-                    onClick={this.handleItemClick}
-                    Link="/"
-                >
-                    KICKSTARTEUR
+//Hosts the top level layout of our app
+const Header = () => {
+    const router = useRouter();
+    return (
+        <Menu style={{ marginTop: "1em" }}>
+            <Menu.Item onClick={() => router.push("/")}>Kickstartv2</Menu.Item>
+            <Menu.Menu position="right">
+                <Menu.Item>Campagnes</Menu.Item>
+                <Menu.Item onClick={() => router.push("/campaigns/new")}>
+                    <Icon name="add circle" />
                 </Menu.Item>
+            </Menu.Menu>
+        </Menu>
+    );
+};
 
-                <Menu.Item
-                    position="right"
-                    name="campaigns"
-                    active={activeItem === "campaigns"}
-                    onClick={this.handleItemClick}
-                >
-                    Campagnes
-                </Menu.Item>
-
-                <Menu.Item
-                    position="right"
-                    name="+"
-                    active={activeItem === "+"}
-                    onClick={this.handleItemClick}
-                >
-                    +
-                </Menu.Item>
-            </Menu>
-        );
-    }
-}
+export default Header;

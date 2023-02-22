@@ -28,7 +28,7 @@ contract Campaign_contract {
     }
 
     uint256 numRequests; //
-    mapping(uint256 => Request) requests;
+    mapping(uint256 => Request) public requests;
 
     address public manager;
     uint256 public minimumContribution;
@@ -41,7 +41,7 @@ contract Campaign_contract {
         _;
     }
 
-    constructor(uint256 minimum, address creator) public {
+    constructor(uint256 minimum, address creator) {
         manager = msg.sender;
         minimumContribution = minimum;
     }
@@ -59,12 +59,13 @@ contract Campaign_contract {
         address payable recipient
     ) public restricted {
         require(approvers[msg.sender]);
-        Request storage r = requests[numRequests++]; //modifié car nvelle instance avec mapping n'est plus possible
+        Request storage r = requests[numRequests]; // <-- use `numRequests` to create a new request
         r.description = description;
         r.value = value;
         r.recipient = recipient;
         r.complete = false;
         r.approvalCount = 0;
+        numRequests++; // remplace length
     }
 
     function approveRequest(uint256 index) public {
@@ -88,6 +89,28 @@ contract Campaign_contract {
         r.recipient.transfer(r.value);
         r.complete = true;
     }
-}
 
-//0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+    function getSummary()
+        public
+        view
+        returns (
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            address
+        )
+    {
+        return (
+            minimumContribution,
+            address(this).balance,
+            numRequests, //remplace length
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint256) {
+        return numRequests; //remplace length
+    }
+}

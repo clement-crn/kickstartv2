@@ -32,8 +32,11 @@ export interface Campaign_contractInterface extends utils.Interface {
     "contribute()": FunctionFragment;
     "createRequest(string,uint256,address)": FunctionFragment;
     "finalizeRequest(uint256)": FunctionFragment;
+    "getRequestsCount()": FunctionFragment;
+    "getSummary()": FunctionFragment;
     "manager()": FunctionFragment;
     "minimumContribution()": FunctionFragment;
+    "requests(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -44,8 +47,11 @@ export interface Campaign_contractInterface extends utils.Interface {
       | "contribute"
       | "createRequest"
       | "finalizeRequest"
+      | "getRequestsCount"
+      | "getSummary"
       | "manager"
       | "minimumContribution"
+      | "requests"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -76,10 +82,22 @@ export interface Campaign_contractInterface extends utils.Interface {
     functionFragment: "finalizeRequest",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "getRequestsCount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSummary",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "manager", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "minimumContribution",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "requests",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
 
   decodeFunctionResult(
@@ -100,11 +118,17 @@ export interface Campaign_contractInterface extends utils.Interface {
     functionFragment: "finalizeRequest",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRequestsCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getSummary", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "manager", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "minimumContribution",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "requests", data: BytesLike): Result;
 
   events: {};
 }
@@ -164,9 +188,28 @@ export interface Campaign_contract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getRequestsCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getSummary(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, BigNumber, BigNumber, BigNumber, string]>;
+
     manager(overrides?: CallOverrides): Promise<[string]>;
 
     minimumContribution(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber, string, boolean, BigNumber] & {
+        description: string;
+        value: BigNumber;
+        recipient: string;
+        complete: boolean;
+        approvalCount: BigNumber;
+      }
+    >;
   };
 
   approveRequest(
@@ -197,9 +240,28 @@ export interface Campaign_contract extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getRequestsCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getSummary(
+    overrides?: CallOverrides
+  ): Promise<[BigNumber, BigNumber, BigNumber, BigNumber, string]>;
+
   manager(overrides?: CallOverrides): Promise<string>;
 
   minimumContribution(overrides?: CallOverrides): Promise<BigNumber>;
+
+  requests(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, BigNumber, string, boolean, BigNumber] & {
+      description: string;
+      value: BigNumber;
+      recipient: string;
+      complete: boolean;
+      approvalCount: BigNumber;
+    }
+  >;
 
   callStatic: {
     approveRequest(
@@ -228,9 +290,28 @@ export interface Campaign_contract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    getRequestsCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSummary(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, BigNumber, BigNumber, BigNumber, string]>;
+
     manager(overrides?: CallOverrides): Promise<string>;
 
     minimumContribution(overrides?: CallOverrides): Promise<BigNumber>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber, string, boolean, BigNumber] & {
+        description: string;
+        value: BigNumber;
+        recipient: string;
+        complete: boolean;
+        approvalCount: BigNumber;
+      }
+    >;
   };
 
   filters: {};
@@ -264,9 +345,18 @@ export interface Campaign_contract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getRequestsCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSummary(overrides?: CallOverrides): Promise<BigNumber>;
+
     manager(overrides?: CallOverrides): Promise<BigNumber>;
 
     minimumContribution(overrides?: CallOverrides): Promise<BigNumber>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -298,9 +388,18 @@ export interface Campaign_contract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    getRequestsCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getSummary(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     manager(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     minimumContribution(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FactoryAbi } from "../../backend/abis";
-import { Card } from "semantic-ui-react";
+
 import Link from "next/link";
 import Layout from "@/components/Layout";
 
@@ -50,16 +50,22 @@ export default function App() {
                     <ul>
                         {myList.map((address) => (
                             <li className="index-ul" key={address}>
-                                <Link href={`/campaign/${address}`}>
+                                <Link
+                                    as={`/campaigns/${address}`}
+                                    href={{
+                                        pathname: `/campaigns/show/`,
+                                        query: { address },
+                                    }}
+                                >
+                                    Voir la campagne<br></br>
                                     {address}
-                                    <br></br>Voir la campagne
                                 </Link>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <div className="index-right">
-                    <button onClick={createCampaign}>Creer une campagne</button>
+                    <button onClick={createCampaign}>Créer une campagne</button>
                 </div>
             </div>
         </Layout>

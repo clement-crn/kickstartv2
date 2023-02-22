@@ -1,79 +1,74 @@
-import React, { Component } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { Form, Button, Input, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import { FactoryAbi } from "../../../backend/abis";
-const { ethers } = require("ethers");
+import { ethers } from "ethers";
 
 const DEPLOYED_CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+const provider = new ethers.providers.JsonRpcProvider();
 const signer = provider.getSigner();
-
 const new_contract = new ethers.Contract(
     DEPLOYED_CONTRACT_ADDRESS,
     FactoryAbi,
     signer
 );
 
-class CampaignNew extends Component {
-    state = {
-        minimumContribution: "",
-        errorMessage: "",
-        loading: false,
-    };
+const CampaignNew = () => {
+    const [minimumContribution, setMinimumContribution] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-    onSubmit = async (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
-        this.setState({ loading: true, errorMessage: "" });
+        setErrorMessage("");
+        setLoading(true);
 
         try {
-            const transaction = await new_contract.createCampaign(
-                this.state.minimumContribution
+            // METAMASK const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const provider = new ethers.providers.JsonRpcProvider();
+            const signer = provider.getSigner();
+            const new_contract = new ethers.Contract(
+                DEPLOYED_CONTRACT_ADDRESS,
+                FactoryAbi,
+                signer
             );
-            await transaction.wait();
 
-            this.props.router.push("/");
+            await new_contract.createCampaign(minimumContribution);
+            setMinimumContribution("");
+            router.push("/");
         } catch (err) {
-            this.setState({ errorMessage: err.message });
+            setErrorMessage(err.message);
+        } finally {
+            setLoading(false);
         }
-
-        this.setState({ loading: false });
     };
 
-    render() {
-        return (
-            <Layout>
-                <h3>Create a Campaign</h3>
+    return (
+        <Layout>
+            <h3>Create a Campaign</h3>
 
-                <Form
-                    onSubmit={this.onSubmit}
-                    error={!!this.state.errorMessage}
-                >
-                    <Form.Field>
-                        <label>Minimum Contribution</label>
-                        <Input
-                            label="wei"
-                            labelPosition="right"
-                            value={this.state.minimumContribution}
-                            onChange={(event) =>
-                                this.setState({
-                                    minimumContribution: event.target.value,
-                                })
-                            }
-                        />
-                    </Form.Field>
-
-                    <Message
-                        error
-                        header="Oops!"
-                        content={this.state.errorMessage}
+            <Form onSubmit={onSubmit} error={!!errorMessage}>
+                <Form.Field>
+                    <label>Minimum Contribution</label>
+                    <Input
+                        label="wei"
+                        labelPosition="right"
+                        value={minimumContribution}
+                        onChange={(event) =>
+                            setMinimumContribution(event.target.value)
+                        }
                     />
-                    <Button loading={this.state.loading} primary>
-                        Create!
-                    </Button>
-                </Form>
-            </Layout>
-        );
-    }
-}
+                </Form.Field>
+
+                <Message error header="Oops!" content={errorMessage} />
+                <Button loading={loading} primary>
+                    Créer
+                </Button>
+            </Form>
+        </Layout>
+    );
+};
 
 export default CampaignNew;

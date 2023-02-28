@@ -39,13 +39,14 @@ export default function App() {
         await getListAdresses();
     };
 
+    useEffect(() => {
+        getListAdresses();
+    }, []);
+
     return (
         <Layout>
             <div className="index-container">
                 <div className="index-left">
-                    <button onClick={getListAdresses}>
-                        Afficher les campagnes
-                    </button>
                     <h3>Campagnes ouvertes:</h3>
                     <ul>
                         {myList.map((address) => (

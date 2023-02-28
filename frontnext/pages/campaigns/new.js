@@ -1,48 +1,35 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Input, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
-import { FactoryAbi } from "../../../backend/abis";
-import { ethers } from "ethers";
+import instance_factory from "../../../backend/factory";
 
-const DEPLOYED_CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const provider = new ethers.providers.JsonRpcProvider();
-const signer = provider.getSigner();
-const new_contract = new ethers.Contract(
-    DEPLOYED_CONTRACT_ADDRESS,
-    FactoryAbi,
-    signer
-);
+import { useRouter } from "next/router";
 
 const CampaignNew = () => {
+    const router = useRouter();
     const [minimumContribution, setMinimumContribution] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        setErrorMessage("");
+
         setLoading(true);
+        setErrorMessage("");
 
         try {
-            // METAMASK const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const provider = new ethers.providers.JsonRpcProvider();
-            const signer = provider.getSigner();
-            const new_contract = new ethers.Contract(
-                DEPLOYED_CONTRACT_ADDRESS,
-                FactoryAbi,
-                signer
-            );
+            const accounts = await window.ethereum.request({
+                method: "eth_accounts",
+            });
 
-            await new_contract.createCampaign(minimumContribution);
-            setMinimumContribution("");
+            await instance_factory.createCampaign(minimumContribution);
+
             router.push("/");
         } catch (err) {
             setErrorMessage(err.message);
-        } finally {
-            setLoading(false);
         }
+
+        setLoading(false);
     };
 
     return (
@@ -64,7 +51,7 @@ const CampaignNew = () => {
 
                 <Message error header="Oops!" content={errorMessage} />
                 <Button loading={loading} primary>
-                    Créer
+                    Create!
                 </Button>
             </Form>
         </Layout>

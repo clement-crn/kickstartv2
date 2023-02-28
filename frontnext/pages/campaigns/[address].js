@@ -5,9 +5,12 @@ import Link from "next/link";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { MainAbi } from "../../../backend/abis";
+import ContributeForm from "@/components/ContributeForm";
 
 const CampaignShow = () => {
-    const [address, setAddress] = useState("");
+    const router = useRouter();
+    const { address } = router.query;
+    console.log("ContributeForm address dans address:", address);
     const [minimumContribution, setMinimumContribution] = useState("");
     const [balance, setBalance] = useState("");
     const [requestsCount, setRequestsCount] = useState("");
@@ -15,16 +18,15 @@ const CampaignShow = () => {
     const [manager, setManager] = useState("");
     const [contractInstance, setContractInstance] = useState(null);
 
-    const router = useRouter();
-
     useEffect(() => {
-        //const provider = new ethers.providers.JsonRpcProvider();
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-        const contract = new ethers.Contract(contractAddress, MainAbi, signer);
-        setContractInstance(contract);
-    }, []);
+        console.log("address in useEffect", address);
+        if (address && contractInstance === null) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(address, MainAbi, signer);
+            setContractInstance(contract);
+        }
+    }, [address, contractInstance]);
 
     useEffect(() => {
         if (contractInstance) {
@@ -93,7 +95,7 @@ const CampaignShow = () => {
                     <Grid.Column width={10}>{renderCards()}</Grid.Column>
 
                     <Grid.Column width={6}>
-                        {/*  <ContributeForm address={address} /> */}
+                        <ContributeForm address={address} />
                     </Grid.Column>
                 </Grid.Row>
 

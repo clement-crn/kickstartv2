@@ -9,7 +9,9 @@ const Header = () => {
         <Menu style={{ marginTop: "1em" }}>
             <Menu.Item onClick={() => router.push("/")}>Kickstartv2</Menu.Item>
             <Menu.Menu position="right">
-                <Menu.Item>Campagnes</Menu.Item>
+                <Menu.Item onClick={() => router.push("/")}>
+                    Campagnes
+                </Menu.Item>
                 <Menu.Item onClick={() => router.push("/campaigns/new")}>
                     <Icon name="add circle" />
                 </Menu.Item>

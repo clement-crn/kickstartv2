@@ -21,7 +21,11 @@ const CampaignShow = () => {
     useEffect(() => {
         console.log("address in useEffect", address);
         if (address && contractInstance === null) {
+            //const provider = new ethers.providers.JsonRpcProvider();
             const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+            // MetaMask requires requesting permission to connect users accounts
+            provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(address, MainAbi, signer);
             setContractInstance(contract);

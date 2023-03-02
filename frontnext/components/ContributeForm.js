@@ -38,7 +38,11 @@ const ContributeForm = ({ address }) => {
     return (
         <Form onSubmit={onSubmit} error={!!errorMessage}>
             <Form.Field>
+<<<<<<< HEAD
                 <label>Montant à déposer</label>
+=======
+                <label>Amount to Contribute</label>
+>>>>>>> de7cb5455dcee31ea5a204459ee6f6d54ba6cbb4
                 <Input
                     value={value}
                     onChange={(event) => setValue(event.target.value)}
@@ -49,7 +53,11 @@ const ContributeForm = ({ address }) => {
 
             <Message error header="Oops!" content={errorMessage} />
             <Button primary loading={loading}>
+<<<<<<< HEAD
                 Contribuer!
+=======
+                Contribute!
+>>>>>>> de7cb5455dcee31ea5a204459ee6f6d54ba6cbb4
             </Button>
         </Form>
     );

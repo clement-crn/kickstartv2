@@ -1,2 +1,7 @@
-export { default as FactoryAbi } from "./factory_abi.json";
-export { default as MainAbi } from "./main_abi.json";
+const FactoryAbi = require("./factory_abi.json");
+const MainAbi = require("./main_abi.json");
+
+module.exports = {
+    FactoryAbi,
+    MainAbi,
+};

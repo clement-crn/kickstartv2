@@ -1,0 +1,22 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+self["webpackHotUpdate_N_E"]("pages/campaigns/new",{
+
+/***/ "../backend/factory.js":
+/*!*****************************!*\
+  !*** ../backend/factory.js ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+eval(__webpack_require__.ts("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ethers */ \"../backend/node_modules/ethers/lib.esm/index.js\");\n/* harmony import */ var _backend_abis_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../backend/abis/index */ \"../backend/abis/index.js\");\n\n\n\nif (window === null) {\n    //const provider = new ethers.providers.JsonRpcProvider();\n    const provider = new ethers__WEBPACK_IMPORTED_MODULE_1__.ethers.providers.Web3Provider(window.ethereum);\n\n    // MetaMask requires requesting permission to connect users accounts\n    provider.send(\"eth_requestAccounts\", []);\n    const signer = provider.getSigner();\n    const contract = new ethers__WEBPACK_IMPORTED_MODULE_1__.ethers.Contract(address, MainAbi, signer);\n    setContractInstance(contract);\n}\n\n//const provider = new ethers.providers.JsonRpcProvider();\nconst provider = new ethers__WEBPACK_IMPORTED_MODULE_1__.ethers.providers.Web3Provider(window.ethereum);\n// MetaMask requires requesting permission to connect users accounts\nconst address = provider.send(\"eth_requestAccounts\", []);\nconst signer = provider.getSigner();\n\nconst factory_instance = new ethers__WEBPACK_IMPORTED_MODULE_1__.ethers.Contract(address, _backend_abis_index__WEBPACK_IMPORTED_MODULE_0__.FactoryAbi, signer);\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (factory_instance);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi4vYmFja2VuZC9mYWN0b3J5LmpzLmpzIiwibWFwcGluZ3MiOiI7OztBQUFnQztBQUNtQjs7QUFFbkQ7QUFDQTtBQUNBLHlCQUF5QixpRUFBNkI7O0FBRXREO0FBQ0E7QUFDQTtBQUNBLHlCQUF5QixtREFBZTtBQUN4QztBQUNBOztBQUVBO0FBQ0EscUJBQXFCLGlFQUE2QjtBQUNsRDtBQUNBO0FBQ0E7O0FBRUEsNkJBQTZCLG1EQUFlLFVBQVUsMkRBQVU7O0FBRWhFLCtEQUFlLGdCQUFnQixFQUFDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vX05fRS8uLi9iYWNrZW5kL2ZhY3RvcnkuanM/MzljZiJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBldGhlcnMgfSBmcm9tIFwiZXRoZXJzXCI7XG5pbXBvcnQgeyBGYWN0b3J5QWJpIH0gZnJvbSBcIi4uL2JhY2tlbmQvYWJpcy9pbmRleFwiO1xuXG5pZiAod2luZG93ID09PSBudWxsKSB7XG4gICAgLy9jb25zdCBwcm92aWRlciA9IG5ldyBldGhlcnMucHJvdmlkZXJzLkpzb25ScGNQcm92aWRlcigpO1xuICAgIGNvbnN0IHByb3ZpZGVyID0gbmV3IGV0aGVycy5wcm92aWRlcnMuV2ViM1Byb3ZpZGVyKHdpbmRvdy5ldGhlcmV1bSk7XG5cbiAgICAvLyBNZXRhTWFzayByZXF1aXJlcyByZXF1ZXN0aW5nIHBlcm1pc3Npb24gdG8gY29ubmVjdCB1c2VycyBhY2NvdW50c1xuICAgIHByb3ZpZGVyLnNlbmQoXCJldGhfcmVxdWVzdEFjY291bnRzXCIsIFtdKTtcbiAgICBjb25zdCBzaWduZXIgPSBwcm92aWRlci5nZXRTaWduZXIoKTtcbiAgICBjb25zdCBjb250cmFjdCA9IG5ldyBldGhlcnMuQ29udHJhY3QoYWRkcmVzcywgTWFpbkFiaSwgc2lnbmVyKTtcbiAgICBzZXRDb250cmFjdEluc3RhbmNlKGNvbnRyYWN0KTtcbn1cblxuLy9jb25zdCBwcm92aWRlciA9IG5ldyBldGhlcnMucHJvdmlkZXJzLkpzb25ScGNQcm92aWRlcigpO1xuY29uc3QgcHJvdmlkZXIgPSBuZXcgZXRoZXJzLnByb3ZpZGVycy5XZWIzUHJvdmlkZXIod2luZG93LmV0aGVyZXVtKTtcbi8vIE1ldGFNYXNrIHJlcXVpcmVzIHJlcXVlc3RpbmcgcGVybWlzc2lvbiB0byBjb25uZWN0IHVzZXJzIGFjY291bnRzXG5jb25zdCBhZGRyZXNzID0gcHJvdmlkZXIuc2VuZChcImV0aF9yZXF1ZXN0QWNjb3VudHNcIiwgW10pO1xuY29uc3Qgc2lnbmVyID0gcHJvdmlkZXIuZ2V0U2lnbmVyKCk7XG5cbmNvbnN0IGZhY3RvcnlfaW5zdGFuY2UgPSBuZXcgZXRoZXJzLkNvbnRyYWN0KGFkZHJlc3MsIEZhY3RvcnlBYmksIHNpZ25lcik7XG5cbmV4cG9ydCBkZWZhdWx0IGZhY3RvcnlfaW5zdGFuY2U7XG4iXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///../backend/factory.js\n"));
+
+/***/ })
+
+});

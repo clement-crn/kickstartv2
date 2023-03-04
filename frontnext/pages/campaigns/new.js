@@ -24,6 +24,9 @@ const CampaignNew = () => {
 
             await instance_factory.createCampaign(minimumContribution);
 
+            const ad = instance_factory.address;
+            console.log(ad);
+
             router.push("/");
         } catch (err) {
             setErrorMessage(err.message);

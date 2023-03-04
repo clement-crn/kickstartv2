@@ -24,25 +24,6 @@ export default function App() {
         setMyList(list_campaigns);
     };
 
-    const createCampaign = async () => {
-        const { ethers } = require("ethers");
-        const DEPLOYED_CONTRACT_ADDRESS =
-            "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-        //const provider = new ethers.providers.JsonRpcProvider();
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-        // MetaMask requires requesting permission to connect users accounts
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        const new_contract = new ethers.Contract(
-            DEPLOYED_CONTRACT_ADDRESS,
-            FactoryAbi,
-            signer
-        );
-        await new_contract.createCampaign(0);
-        await getListAdresses();
-    };
-
     useEffect(() => {
         getListAdresses();
     }, []);

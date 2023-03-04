@@ -1,6 +1,6 @@
 {
   "pages": {
-    "/campaigns/[address]/newreq": []
+    "/campaigns/[address]/home": []
   },
   "app": {}
 }

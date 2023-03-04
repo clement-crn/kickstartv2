@@ -5,7 +5,7 @@ import { MainAbi } from "../../../../backend/abis";
 import { Form, Button } from "semantic-ui-react";
 import Layout from "@/components/Layout";
 
-export default function CampaignForm() {
+function CampaignForm() {
     const [description, setDescription] = useState("");
     const [value, setValue] = useState("");
     const [recipient, setRecipient] = useState("");
@@ -23,30 +23,29 @@ export default function CampaignForm() {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(address, MainAbi, signer);
 
-            // get the manager address
-            const managerAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-
-            // create a new contract instance with the manager as the caller
-            const managerContract = contract.connect(
-                signer.connectUnchecked(managerAddress)
-            );
-
-            // call the createRequest function as the manager and send payment to the external recipient
-            const transaction = await managerContract.createRequest(
+            const gasLimit = 1000000;
+            const transaction = await contract.createRequest(
                 description,
                 value,
                 recipient,
-                { gasLimit: 30000000, value: 0 }
+                { gasLimit }
             );
 
-            await transaction.wait();
+            const receipt = await transaction.wait();
+            console.log("Transaction receipt: ", receipt);
 
             setLoading(false);
+            router.push("/");
         } catch (error) {
             setErrorMessage(error.message);
             setLoading(false);
         }
     };
+
+    console.log("address:", address);
+    console.log("descripion:", address);
+    console.log("value:", value);
+    console.log("recipient:", recipient);
 
     return (
         <Layout>
@@ -84,3 +83,4 @@ export default function CampaignForm() {
         </Layout>
     );
 }
+export default CampaignForm;

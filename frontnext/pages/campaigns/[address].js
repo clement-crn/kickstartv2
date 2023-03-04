@@ -22,7 +22,6 @@ const CampaignShow = () => {
         console.log("address in useEffect", address);
         if (address && contractInstance === null) {
             const provider = new ethers.providers.JsonRpcProvider();
-            //const provider = new ethers.providers.Web3Provider(window.ethereum);
 
             const signer = provider.getSigner();
             const contract = new ethers.Contract(address, MainAbi, signer);
@@ -103,8 +102,11 @@ const CampaignShow = () => {
 
                 <Grid.Row>
                     <Grid.Column>
-                        <Link href={`/campaigns/${address}/requests`}>
-                            <Button primary>View Requests</Button>
+                        <Link href={`/campaigns/${address}/home`}>
+                            <Button primary>Voir les requests</Button>
+                        </Link>
+                        <Link href={`/campaigns/${address}/newreq`}>
+                            <Button primary>Retirer des fonds du projet</Button>
                         </Link>
                     </Grid.Column>
                 </Grid.Row>

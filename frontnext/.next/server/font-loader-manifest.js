@@ -1,6 +1,6 @@
 self.__FONT_LOADER_MANIFEST={
   "pages": {
-    "/campaigns/[address]/home": []
+    "/campaigns/[address]/requestHome": []
   },
   "app": {}
 }

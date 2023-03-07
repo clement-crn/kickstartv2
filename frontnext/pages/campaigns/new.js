@@ -13,10 +13,8 @@ const CampaignNew = () => {
 
     const onSubmit = async (event) => {
         event.preventDefault();
-
         setLoading(true);
         setErrorMessage("");
-
         try {
             const accounts = await window.ethereum.request({
                 method: "eth_accounts",

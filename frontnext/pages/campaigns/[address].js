@@ -41,7 +41,8 @@ const CampaignShow = () => {
                 ] = await contractInstance.getSummary();
 
                 setMinimumContribution(minimumContribution.toString());
-                setBalance(balance.toString());
+                setBalance(ethers.utils.formatEther(balance));
+
                 setRequestsCount(requestsCount.toString());
                 setApproversCount(approversCount.toString());
                 setManager(manager);

@@ -1,60 +1,69 @@
-/*import { Table, Button } from "semantic-ui-react";
+import { Button, Table } from "semantic-ui-react";
+import { ethers } from "ethers";
 import { MainAbi } from "@/../backend/abis";
-import { useRouter } from "next/router";
 
-export default function RequestRow() {
-    const router = useRouter();
-    const { address } = router.query;
-
+const RequestRow = ({ id, request, address, approversCount }) => {
     const onApprove = async () => {
-        const provider = new ethers.providers.JsonRpcProvider();
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(address, MainAbi, signer);
-        const approve = await contract.approveRequest(id)
+        const contract = new ethers.Contract(
+            address,
+            MainAbi,
+            ethers.providers.JsonRpcProvider()
+        );
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+        });
+        const tx = await contract
+            .approveRequest(id)
+            .connect(ethers.provider.getSigner());
+        await tx.wait();
     };
 
-    return (
-        <Layout>
-            <Table.Row
-                disabled={request.complete}
-                positive={readyToFinalize && !request.complete}
-            >
-                <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{request.description}</Table.Cell>
-                <Table.Cell>
-                    {ethers.utils.formatEther(request.value)}
-                </Table.Cell>
-                <Table.Cell>{request.recipient}</Table.Cell>
-                <Table.Cell>
-                    {request.approvalCount}/{approversCount}
-                </Table.Cell>
-                <Table.Cell>
-                    {request.complete ? null : (
-                        <Button
-                            color="green"
-                            basic
-                            loading={loading}
-                            onClick={onApprove}
-                        >
-                            Approve
-                        </Button>
-                    )}
-                </Table.Cell>
-                <Table.Cell>
-                    {request.complete ? null : (
-                        <Button
-                            color="teal"
-                            basic
-                            loading={loading}
-                            onClick={onFinalize}
-                        >
-                            Finalize
-                        </Button>
-                    )}
-                </Table.Cell>
-            </Table.Row>
-        </Layout>
-    );
-}
+    const onFinalize = async () => {
+        const contract = new ethers.Contract(
+            address,
+            MainAbi,
+            ethers.providers.JsonRpcProvider()
+        );
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+        });
+        const tx = await contract
+            .finalizeRequest(id)
+            .connect(ethers.provider.getSigner());
+        await tx.wait();
+    };
 
-*/
+    const { Row, Cell } = Table;
+    const readyToFinalize = request.approvalCount > approversCount / 2;
+
+    return (
+        <Row
+            disabled={request.complete}
+            positive={readyToFinalize && !request.complete}
+        >
+            <Cell>{id}</Cell>
+            <Cell>{request.description}</Cell>
+            <Cell>{ethers.utils.formatEther(request.value)}</Cell>
+            <Cell>{request.recipient}</Cell>
+            <Cell>
+                {request.approvalCount}/{approversCount}
+            </Cell>
+            <Cell>
+                {request.complete ? null : (
+                    <Button color="green" basic onClick={onApprove}>
+                        Approve
+                    </Button>
+                )}
+            </Cell>
+            <Cell>
+                {request.complete ? null : (
+                    <Button color="teal" basic onClick={onFinalize}>
+                        Finalize
+                    </Button>
+                )}
+            </Cell>
+        </Row>
+    );
+};
+
+export default RequestRow;

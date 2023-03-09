@@ -1,56 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button, Header, Table } from "semantic-ui-react";
 import Layout from "@/components/Layout";
-import { MainAbi } from "@/../backend/abis";
+import RequestRow from "@/components/RequestRow";
 import { ethers } from "ethers";
+import { MainAbi } from "../../../../backend/abis";
 
-export default function RequestIndex() {
-    const [campaign, setCampaign] = useState(null);
-    const [requests, setRequests] = useState([]);
-    const [requestsCount, setRequestsCount] = useState(0);
-    const [approversCount, setApproversCount] = useState(0);
-    const [contractInstance, setContractInstance] = useState(null);
-
+const RequestIndex = ({ address }) => {
     const router = useRouter();
-    const { address } = router.query;
-
-    /*
-    //voir instance contrat pour la suite
-    const [balance, setBalance] = useState(0); // initialize balance to 0
-    console.log(address);
-    const provider = new ethers.providers.JsonRpcProvider();
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(address, MainAbi, signer);
-    setContractInstance(contract);
-    //
-    */
+    const [requestCount, setRequestCount] = useState(0);
+    const [approversCount, setApproversCount] = useState(0);
+    const [requests, setRequests] = useState([]);
+    const [campaign, setCampaign] = useState(null);
 
     useEffect(() => {
-        if (address) {
-            //pour eviter address undefined
-            console.log("address dans useEffect", address);
+        async function fetchData() {
             const provider = new ethers.providers.JsonRpcProvider();
             const signer = provider.getSigner();
-            const contract = new ethers.Contract(address, MainAbi, signer);
-            setContractInstance(contract);
+            const campaign = new ethers.Contract(address, MainAbi, signer);
+            setCampaign(campaign);
+
+            const count = await campaign.getRequestsCount();
+            setRequestCount(parseInt(count));
+
+            const approverCount = await campaign.approversCount();
+            setApproversCount(parseInt(approverCount));
+
+            const requests = await Promise.all(
+                Array(parseInt(count))
+                    .fill()
+                    .map((element, index) => {
+                        return campaign.requests(index);
+                    })
+            );
+            setRequests(requests);
         }
-    }, [address]);
 
-    useEffect(() => {
-        if (contractInstance) {
-            const fetchData = async () => {
-                const requestsCount = await contractInstance.getRequestsCount();
-                setRequestsCount(requestsCount.toString());
-                console.log("REQUESTSCOUNT:", requestsCount);
-
-                const approversCount = await contractInstance.approversCount();
-                setApproversCount(approversCount.toString());
-                console.log("APPROVERSCOUNT:", requestsCount);
-            };
+        if (address) {
             fetchData();
         }
-    }, [contractInstance]);
+    }, [address]);
 
     const renderRows = () => {
         return requests.map((request, index) => {
@@ -58,13 +47,22 @@ export default function RequestIndex() {
                 <RequestRow
                     key={index}
                     id={index}
-                    request={request}
+                    request={{
+                        ...request,
+                        value: request.value.toString(),
+                        approvalCount: request.approvalCount.toString(),
+                        complete: request.complete.toString(),
+                    }}
                     address={address}
                     approversCount={approversCount}
                     campaign={campaign}
                 />
             );
         });
+    };
+
+    const createRequest = async () => {
+        router.push(`/campaigns/${address}/requests/new`);
     };
 
     return (
@@ -74,7 +72,7 @@ export default function RequestIndex() {
                 primary
                 floated="right"
                 style={{ marginBottom: 10 }}
-                href={`/campaigns/${address}/requests/new`}
+                onClick={createRequest}
             >
                 Add Request
             </Button>
@@ -92,7 +90,19 @@ export default function RequestIndex() {
                 </Table.Header>
                 <Table.Body>{renderRows()}</Table.Body>
             </Table>
-            <div>Found {requestsCount} requests.</div>
+            <div>Found {requestCount} requests.</div>
         </Layout>
     );
+};
+
+export async function getServerSideProps(props) {
+    const { address } = props.query;
+
+    return {
+        props: {
+            address,
+        },
+    };
 }
+
+export default RequestIndex;

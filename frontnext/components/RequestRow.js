@@ -2,39 +2,30 @@ import { Button, Table } from "semantic-ui-react";
 import { ethers } from "ethers";
 import { MainAbi } from "@/../backend/abis";
 
-const RequestRow = ({ id, request, address, approversCount }) => {
+const RequestRow = ({
+    id,
+    request,
+    address,
+    approversCount,
+    campaign,
+    children,
+}) => {
+    const { Row, Cell } = Table;
+    const readyToFinalize = request.approvalCount > approversCount / 2;
+
     const onApprove = async () => {
-        const contract = new ethers.Contract(
-            address,
-            MainAbi,
-            ethers.providers.JsonRpcProvider()
-        );
-        const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-        });
-        const tx = await contract
-            .approveRequest(id)
-            .connect(ethers.provider.getSigner());
-        await tx.wait();
+        const provider = new ethers.providers.JsonRpcProvider();
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(address, MainAbi, signer);
+        await contract.approveRequest(id);
     };
 
     const onFinalize = async () => {
-        const contract = new ethers.Contract(
-            address,
-            MainAbi,
-            ethers.providers.JsonRpcProvider()
-        );
-        const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-        });
-        const tx = await contract
-            .finalizeRequest(id)
-            .connect(ethers.provider.getSigner());
-        await tx.wait();
+        const provider = new ethers.providers.JsonRpcProvider();
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(address, MainAbi, signer);
+        await contract.finalizeRequest(id);
     };
-
-    const { Row, Cell } = Table;
-    const readyToFinalize = request.approvalCount > approversCount / 2;
 
     return (
         <Row
@@ -43,18 +34,12 @@ const RequestRow = ({ id, request, address, approversCount }) => {
         >
             <Cell>{id}</Cell>
             <Cell>{request.description}</Cell>
-            <Cell>{ethers.utils.formatEther(request.value)}</Cell>
+            <Cell>{request.value}</Cell>
             <Cell>{request.recipient}</Cell>
             <Cell>
                 {request.approvalCount}/{approversCount}
             </Cell>
-            <Cell>
-                {request.complete ? null : (
-                    <Button color="green" basic onClick={onApprove}>
-                        Approve
-                    </Button>
-                )}
-            </Cell>
+            {children}
             <Cell>
                 {request.complete ? null : (
                     <Button color="teal" basic onClick={onFinalize}>

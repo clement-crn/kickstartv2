@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { Button, Header, Table } from "semantic-ui-react";
 import Layout from "@/components/Layout";
 import RequestRow from "@/components/RequestRow";
@@ -7,7 +6,6 @@ import { ethers } from "ethers";
 import { MainAbi } from "../../../../backend/abis";
 
 const RequestIndex = ({ address }) => {
-    const router = useRouter();
     const [requestCount, setRequestCount] = useState(0);
     const [approversCount, setApproversCount] = useState(0);
     const [requests, setRequests] = useState([]);
@@ -26,13 +24,16 @@ const RequestIndex = ({ address }) => {
             const approverCount = await campaign.approversCount();
             setApproversCount(parseInt(approverCount));
 
-            const requests = await Promise.all(
-                Array(parseInt(count))
-                    .fill()
-                    .map((element, index) => {
-                        return campaign.requests(index);
-                    })
-            );
+            const requests = [];
+            for (let i = 0; i < count; i++) {
+                const request = await campaign.requests(i);
+                requests.push({
+                    ...request,
+                    value: ethers.utils.formatEther(request.value),
+                    approvalCount: parseInt(request.approvalCount),
+                    complete: request.complete,
+                });
+            }
             setRequests(requests);
         }
 
@@ -41,24 +42,21 @@ const RequestIndex = ({ address }) => {
         }
     }, [address]);
 
-    const renderRows = () => {
-        return requests.map((request, index) => {
-            return (
-                <RequestRow
-                    key={index}
-                    id={index}
-                    request={{
-                        ...request,
-                        value: request.value.toString(),
-                        approvalCount: request.approvalCount.toString(),
-                        complete: request.complete.toString(),
-                    }}
-                    address={address}
-                    approversCount={approversCount}
-                    campaign={campaign}
-                />
-            );
+    const onApprove = async (id) => {
+        const provider = new ethers.providers.JsonRpcProvider();
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(address, MainAbi, signer);
+        await contract.approveRequest(id);
+
+        console.log("test");
+    };
+
+    const onFinalize = async (id) => {
+        const signer = await window.ethereum.request({
+            method: "eth_requestAccounts",
         });
+        const campaignWithSigner = campaign.connect(signer);
+        await campaignWithSigner.finalizeRequest(id);
     };
 
     const createRequest = async () => {
@@ -85,10 +83,33 @@ const RequestIndex = ({ address }) => {
                         <Table.HeaderCell>Recipient</Table.HeaderCell>
                         <Table.HeaderCell>Approval Count</Table.HeaderCell>
                         <Table.HeaderCell>Approve</Table.HeaderCell>
-                        <Table.HeaderCell>Finalize</Table.HeaderCell>
+
+                        <Table.HeaderCell>Finaliser</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
-                <Table.Body>{renderRows()}</Table.Body>
+                <Table.Body>
+                    {requests.map((request, index) => (
+                        <RequestRow
+                            key={index}
+                            id={index}
+                            request={request}
+                            approversCount={approversCount}
+                            campaign={campaign}
+                        >
+                            <Table.Cell>
+                                {request.complete ? null : (
+                                    <Button
+                                        color="green"
+                                        basic
+                                        onClick={() => onApprove(index)}
+                                    >
+                                        Approve
+                                    </Button>
+                                )}
+                            </Table.Cell>
+                        </RequestRow>
+                    ))}
+                </Table.Body>
             </Table>
             <div>Found {requestCount} requests.</div>
         </Layout>

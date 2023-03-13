@@ -1,6 +1,9 @@
 {
   "pages": {
-    "/campaigns/[address]": []
+    "/campaigns/[address]": [],
+    "/": [],
+    "/campaigns/new": [],
+    "/campaigns/[address]/requestHome": []
   },
   "app": {}
 }

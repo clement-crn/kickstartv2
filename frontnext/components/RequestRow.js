@@ -13,18 +13,17 @@ const RequestRow = ({
     const { Row, Cell } = Table;
     const readyToFinalize = request.approvalCount > approversCount / 2;
 
-    const onApprove = async () => {
-        const provider = new ethers.providers.JsonRpcProvider();
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(address, MainAbi, signer);
-        await contract.approveRequest(id);
-    };
-
     const onFinalize = async () => {
-        const provider = new ethers.providers.JsonRpcProvider();
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(address, MainAbi, signer);
-        await contract.finalizeRequest(id);
+        try {
+            const provider = new ethers.providers.JsonRpcProvider();
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(address, MainAbi, signer);
+            await contract.finalizeRequest(id, {
+                gasLimit: 500000,
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -42,7 +41,7 @@ const RequestRow = ({
             {children}
             <Cell>
                 {request.complete ? null : (
-                    <Button color="teal" basic onClick={onFinalize}>
+                    <Button color="teal" onClick={onFinalize}>
                         Finalize
                     </Button>
                 )}

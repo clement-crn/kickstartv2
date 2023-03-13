@@ -50,39 +50,41 @@ const RequestIndex = ({ address }) => {
 
         console.log("test");
     };
-
-    const onFinalize = async (id) => {
-        const signer = await window.ethereum.request({
-            method: "eth_requestAccounts",
-        });
-        const campaignWithSigner = campaign.connect(signer);
-        await campaignWithSigner.finalizeRequest(id);
+    const onFinalize = async () => {
+        try {
+            const provider = new ethers.providers.JsonRpcProvider();
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(address, MainAbi, signer);
+            await contract.finalizeRequest(id);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const createRequest = async () => {
-        router.push(`/campaigns/${address}/requests/new`);
+        router.push(`/campaigns/${address}/requests/newreq`);
     };
 
     return (
         <Layout>
-            <Header as="h3">Requests</Header>
+            <Header as="h3">Requêtes</Header>
             <Button
                 primary
                 floated="right"
                 style={{ marginBottom: 10 }}
                 onClick={createRequest}
             >
-                Add Request
+                Ajouter une requête
             </Button>
             <Table celled>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>ID</Table.HeaderCell>
-                        <Table.HeaderCell>Description</Table.HeaderCell>
-                        <Table.HeaderCell>Amount</Table.HeaderCell>
-                        <Table.HeaderCell>Recipient</Table.HeaderCell>
-                        <Table.HeaderCell>Approval Count</Table.HeaderCell>
-                        <Table.HeaderCell>Approve</Table.HeaderCell>
+                        <Table.HeaderCell>Déscription</Table.HeaderCell>
+                        <Table.HeaderCell>Montant</Table.HeaderCell>
+                        <Table.HeaderCell>Receveur</Table.HeaderCell>
+                        <Table.HeaderCell>Votes pour</Table.HeaderCell>
+                        <Table.HeaderCell>Approuver</Table.HeaderCell>
 
                         <Table.HeaderCell>Finaliser</Table.HeaderCell>
                     </Table.Row>
@@ -95,12 +97,12 @@ const RequestIndex = ({ address }) => {
                             request={request}
                             approversCount={approversCount}
                             campaign={campaign}
+                            address={address}
                         >
                             <Table.Cell>
                                 {request.complete ? null : (
                                     <Button
                                         color="green"
-                                        basic
                                         onClick={() => onApprove(index)}
                                     >
                                         Approve
@@ -111,7 +113,7 @@ const RequestIndex = ({ address }) => {
                     ))}
                 </Table.Body>
             </Table>
-            <div>Found {requestCount} requests.</div>
+            <div>{requestCount} requêtes trouvées.</div>
         </Layout>
     );
 };

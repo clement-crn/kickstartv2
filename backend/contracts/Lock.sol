@@ -57,7 +57,7 @@ contract Campaign_contract {
         string calldata description,
         uint256 value,
         address payable recipient
-    ) public {
+    ) public restricted {
         require(approvers[msg.sender]);
         Request storage r = requests[numRequests]; // <-- use `numRequests` to create a new request
         r.description = description;
@@ -79,7 +79,7 @@ contract Campaign_contract {
     }
 
     //permet de payer le vendeur fictif si les contributeurs sont OK
-    function finalizeRequest(uint256 index) public {
+    function finalizeRequest(uint256 index) public restricted {
         //attention, rajouter restricted apres test
         Request storage r = requests[index];
 

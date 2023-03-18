@@ -35,15 +35,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/campaigns/[address].js"
     ],
-    "/campaigns/[address]/newreq": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/campaigns/[address]/newreq.js"
-    ],
     "/campaigns/[address]/requestHome": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/campaigns/[address]/requestHome.js"
+    ],
+    "/campaigns/new": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/campaigns/new.js"
     ]
   },
   "ampFirstPages": []

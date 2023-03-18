@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import RequestRow from "@/components/RequestRow";
 import { ethers } from "ethers";
 import { MainAbi } from "../../../../backend/abis";
+import { useRouter } from "next/router";
 
 const RequestIndex = ({ address }) => {
     const [requestCount, setRequestCount] = useState(0);
@@ -47,8 +48,7 @@ const RequestIndex = ({ address }) => {
         const signer = provider.getSigner();
         const contract = new ethers.Contract(address, MainAbi, signer);
         await contract.approveRequest(id);
-
-        console.log("test");
+        router.push(`/campaigns/${address}/requestHome`);
     };
     const onFinalize = async () => {
         try {
@@ -56,6 +56,7 @@ const RequestIndex = ({ address }) => {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(address, MainAbi, signer);
             await contract.finalizeRequest(id);
+            router.push(`/campaigns/${address}/requestHome`);
         } catch (error) {
             console.error(error);
         }

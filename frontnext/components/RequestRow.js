@@ -21,6 +21,7 @@ const RequestRow = ({
             await contract.finalizeRequest(id, {
                 gasLimit: 500000,
             });
+            router.push(`/campaigns/${address}/requestHome`);
         } catch (error) {
             console.error(error);
         }

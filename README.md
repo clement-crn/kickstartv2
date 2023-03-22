@@ -9,12 +9,15 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
 
 
 **1) lancer le noeud local**
+
     npx hardhat node 
     
 **2) deployer le script**
+
     npx hardhat run --network localhost scripts/deploy.ts
 
 **3) lancer le serv web**
+
     npm run dev
     
     

@@ -46,19 +46,15 @@ function CampaignForm() {
         setErrorMessage("");
 
         try {
-            // Check if the user is connected to their wallet
             if (!window.ethereum || !window.ethereum.selectedAddress) {
                 throw new Error("Please connect your wallet");
             }
 
-            // Connect to the user's Metamask wallet
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
 
-            // Create a new contract instance
             const contract = new ethers.Contract(address, MainAbi, signer);
 
-            // Create the request
             const gasLimit = 1000000;
             const transaction = await contract.createRequest(
                 description,
@@ -67,7 +63,6 @@ function CampaignForm() {
                 { gasLimit }
             );
 
-            // Wait for the transaction to be confirmed
             const receipt = await transaction.wait();
 
             setLoading(false);

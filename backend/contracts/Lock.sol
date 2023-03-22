@@ -59,7 +59,7 @@ contract Campaign_contract {
         address payable recipient
     ) public restricted {
         require(approvers[msg.sender]);
-        Request storage r = requests[numRequests]; // <-- use `numRequests` to create a new request
+        Request storage r = requests[numRequests];
         r.description = description;
         r.value = value;
         r.recipient = recipient;
@@ -78,7 +78,7 @@ contract Campaign_contract {
         r.approvalCount++;
     }
 
-    //permet de payer le vendeur fictif si les contributeurs sont OK
+    //permet de payer le fournisseur si les contributeurs sont OK
     function finalizeRequest(uint256 index) public restricted {
         //attention, rajouter restricted apres test
         Request storage r = requests[index];

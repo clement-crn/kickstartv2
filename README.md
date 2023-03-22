@@ -14,7 +14,7 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
 
 -Partie web completement refaite de zero
 
--La v1 trichait en utilisant seulement le provider rpc de ethers pour toutes les transactions. Le site tournait avec seulement le manager pour vérifier si l'affichage des données était OK. Dans la v2, on peut jouer avec les comptes sur MetaMask.
+-La v1 trichait en utilisant seulement le JsonRpcProvider de ethers pour toutes les transactions. Le site tournait avec seulement le manager pour vérifier si l'affichage des données était OK. Dans la v2, on peut jouer avec les comptes sur MetaMask.
 
 ## Lancer le site
 

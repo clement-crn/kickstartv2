@@ -1,4 +1,4 @@
-Mes divergences avec le projet initial :
+##Mes divergences avec le projet initial :
 
 -suppression de router.js. Ce fichier est remplacé par les routes
 dynamiques
@@ -10,7 +10,7 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
 -abis isolés dans /backend/abis
 
 
-Pourquoi "v2" ?
+##Pourquoi "v2" ?
 
 -Partie web completement refaite de zero
 -La v1 trichait en utilisant seulement le RPCprovider pour toutes les transactions (le site tournait avec seulement le manager pour vérifier si 
@@ -32,7 +32,7 @@ l'affichage des données était OK. Dans la v2, on peut jouer avec les comptes s
     
 **4) ajouter les comptes sur MetaMask depuis backend/accounts.json**
     
- Fix en cours :
+ ##Fix en cours :
  
  -conversion des montants
  

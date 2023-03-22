@@ -30,7 +30,7 @@ l'affichage des données était OK. Dans la v2, on peut jouer avec les comptes s
 
     npm run dev
     
-**4) ajouter les comptes sur MetaMask depuis backend/accounts.json
+**4) ajouter les comptes sur MetaMask depuis backend/accounts.json**
     
  Fix en cours :
  

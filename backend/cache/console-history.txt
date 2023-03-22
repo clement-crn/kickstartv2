@@ -1,0 +1,13 @@
+const accounts = await ethers.getSigners(account[0])
+const accounts = await ethers.getSigners()
+.exit
+fs.writeFileSync('accounts.json', JSON.stringify(accounts));
+}
+  });
+    privateKey: wallet.privateKey
+    address: wallet.address,
+  accounts.push({
+  const wallet = ethers.Wallet.createRandom();
+for(let i = 0; i < 5; i++) {
+const accounts = [];
+const fs = require('fs');

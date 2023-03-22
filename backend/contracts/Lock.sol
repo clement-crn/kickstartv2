@@ -41,8 +41,8 @@ contract Campaign_contract {
         _;
     }
 
-    constructor(uint256 minimum, address creator) {
-        manager = msg.sender;
+    constructor(uint256 minimum, address managerAddress) {
+        manager = managerAddress;
         minimumContribution = minimum;
     }
 

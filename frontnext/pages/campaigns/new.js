@@ -3,7 +3,10 @@ import { Form, Button, Input, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import instance_factory from "../../../backend/factory";
 
+import { ethers } from "ethers";
 import { useRouter } from "next/router";
+import { FactoryAbi } from "@/../backend/abis";
+import factory_instance from "../../../backend/factory";
 
 const CampaignNew = () => {
     const router = useRouter();
@@ -16,14 +19,11 @@ const CampaignNew = () => {
         setLoading(true);
         setErrorMessage("");
         try {
-            const accounts = await window.ethereum.request({
-                method: "eth_accounts",
-            });
+            const tx = await factory_instance.createCampaign(
+                minimumContribution
+            );
 
-            await instance_factory.createCampaign(minimumContribution);
-
-            const ad = instance_factory.address;
-            console.log(ad);
+            await tx.wait();
 
             router.push("/");
         } catch (err) {

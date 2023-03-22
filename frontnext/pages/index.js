@@ -10,7 +10,8 @@ export default function App() {
     const getListAdresses = async () => {
         const { ethers } = require("ethers");
         const DEPLOYED_CONTRACT_ADDRESS =
-            "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+            "0x9090946a39F6a042c5578560DC5F1678Ee8a4d44";
+        //"contrqt déployé à l'addresse ..."
         const provider = new ethers.providers.JsonRpcProvider();
         const signer = provider.getSigner();
 
@@ -19,6 +20,7 @@ export default function App() {
             FactoryAbi,
             signer
         );
+
         const list_campaigns = await new_contract.getCampaigns();
         console.log(list_campaigns);
         setMyList(list_campaigns);

@@ -6,26 +6,31 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { MainAbi } from "../../../backend/abis";
 import ContributeForm from "@/components/ContributeForm";
+import factory_instance from "@/../backend/factory";
 
 const CampaignShow = () => {
     const router = useRouter();
     const { address } = router.query;
-    console.log("ContributeForm address dans address:", address);
     const [minimumContribution, setMinimumContribution] = useState("");
     const [balance, setBalance] = useState("");
     const [requestsCount, setRequestsCount] = useState("");
     const [approversCount, setApproversCount] = useState("");
     const [manager, setManager] = useState("");
     const [contractInstance, setContractInstance] = useState(null);
+    const [currentAccount, setCurrentAccount] = useState("");
 
     useEffect(() => {
-        console.log("address in useEffect", address);
         if (address && contractInstance === null) {
-            const provider = new ethers.providers.JsonRpcProvider();
-
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(address, MainAbi, signer);
             setContractInstance(contract);
+
+            window.ethereum
+                .request({ method: "eth_accounts" })
+                .then((accounts) => {
+                    setCurrentAccount(accounts[0]);
+                });
         }
     }, [address, contractInstance]);
 
@@ -42,7 +47,6 @@ const CampaignShow = () => {
 
                 setMinimumContribution(minimumContribution.toString());
                 setBalance(ethers.utils.formatEther(balance));
-
                 setRequestsCount(requestsCount.toString());
                 setApproversCount(approversCount.toString());
                 setManager(manager);
@@ -95,12 +99,13 @@ const CampaignShow = () => {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={10}>{renderCards()}</Grid.Column>
-
                     <Grid.Column width={6}>
-                        <ContributeForm address={address} />
+                        <ContributeForm
+                            address={address}
+                            contractInstance={contractInstance}
+                        />
                     </Grid.Column>
                 </Grid.Row>
-
                 <Grid.Row>
                     <Grid.Column>
                         <Link href={`/campaigns/${address}/requestHome`}>

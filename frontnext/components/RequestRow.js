@@ -1,6 +1,7 @@
 import { Button, Table } from "semantic-ui-react";
 import { ethers } from "ethers";
 import { MainAbi } from "@/../backend/abis";
+import { useRouter } from "next/router";
 
 const RequestRow = ({
     id,
@@ -15,7 +16,11 @@ const RequestRow = ({
 
     const onFinalize = async () => {
         try {
-            const provider = new ethers.providers.JsonRpcProvider();
+            //onst provider = new ethers.providers.JsonRpcProvider();
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            // MetaMask requires requesting permission to connect users accounts
+            await provider.send("eth_requestAccounts", []);
+
             const signer = provider.getSigner();
             const contract = new ethers.Contract(address, MainAbi, signer);
             await contract.finalizeRequest(id, {

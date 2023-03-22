@@ -4,6 +4,5 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/campaigns/[address]": "pages/campaigns/[address].js",
-  "/campaigns/[address]/requestHome": "pages/campaigns/[address]/requestHome.js",
-  "/campaigns/new": "pages/campaigns/new.js"
+  "/campaigns/[address]/requestHome": "pages/campaigns/[address]/requestHome.js"
 }

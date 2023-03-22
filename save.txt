@@ -1,46 +1,61 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { Card, Grid, Button } from "semantic-ui-react";
+import Layout from "../../components/Layout";
+import Link from "next/link";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { MainAbi } from "../../../backend/abis";
+import ContributeForm from "@/components/ContributeForm";
+import factory_instance from "@/../backend/factory";
 
-import Layout from "@/components/Layout";
-import { main_abi } from "../../../backend/abis";
+const CampaignShow = () => {
+    const router = useRouter();
+    const { address } = router.query;
+    const [minimumContribution, setMinimumContribution] = useState("");
+    const [balance, setBalance] = useState("");
+    const [requestsCount, setRequestsCount] = useState("");
+    const [approversCount, setApproversCount] = useState("");
+    const [manager, setManager] = useState("");
+    const [contractInstance, setContractInstance] = useState(null);
+    const [currentAccount, setCurrentAccount] = useState("");
 
-class CampaignShow extends Component {
-    static async getInitialProps({ query }) {
-        const DEPLOYED_CONTRACT_ADDRESS =
-            "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-        //addresse Campaign_contract
-        const provider = new ethers.providers.JsonRpcProvider();
-        const signer = provider.getSigner();
+    useEffect(() => {
+        if (address && contractInstance === null) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(address, MainAbi, signer);
+            setContractInstance(contract);
 
-        const Campaign = new ethers.Contract(
-            DEPLOYED_CONTRACT_ADDRESS,
-            main_abi,
-            signer
-        );
+            window.ethereum
+                .request({ method: "eth_accounts" })
+                .then((accounts) => {
+                    setCurrentAccount(accounts[0]);
+                });
+        }
+    }, [address, contractInstance]);
 
-        const campaign = Campaign(query.address);
+    useEffect(() => {
+        if (contractInstance) {
+            const fetchData = async () => {
+                const [
+                    minimumContribution,
+                    balance,
+                    requestsCount,
+                    approversCount,
+                    manager,
+                ] = await contractInstance.getSummary();
 
-        const summary = await campaign.getSummary().call();
+                setMinimumContribution(minimumContribution.toString());
+                setBalance(ethers.utils.formatEther(balance));
+                setRequestsCount(requestsCount.toString());
+                setApproversCount(approversCount.toString());
+                setManager(manager);
+            };
+            fetchData();
+        }
+    }, [contractInstance]);
 
-        return {
-            address: query.address,
-            minimumContribution: summary[0].toString(),
-            balance: summary[1].toString(),
-            requestsCount: summary[2].toString(),
-            approversCount: summary[3].toString(),
-            manager: summary[4],
-        };
-    }
-
-    renderCards() {
-        const {
-            balance,
-            manager,
-            minimumContribution,
-            requestsCount,
-            approversCount,
-        } = this.props;
-
+    const renderCards = () => {
         const items = [
             {
                 header: manager,
@@ -68,7 +83,7 @@ class CampaignShow extends Component {
                     "Number of people who have already donated to this campaign",
             },
             {
-                header: ethers.utils.formatEther(balance),
+                header: balance,
                 meta: "Campaign Balance (ether)",
                 description:
                     "The balance is how much money this campaign has left to spend.",
@@ -76,38 +91,34 @@ class CampaignShow extends Component {
         ];
 
         return <Card.Group items={items} />;
-    }
+    };
 
-    render() {
-        return (
-            <Layout>
-                <h3>Campaign Show</h3>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={10}>
-                            {this.renderCards()}
-                        </Grid.Column>
-
-                        <Grid.Column width={6}>
-                            <ContributeForm address={this.props.address} />
-                        </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Link
-                                route={`/campaigns/${this.props.address}/requests`}
-                            >
-                                <a>
-                                    <Button primary>View Requests</Button>
-                                </a>
-                            </Link>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Layout>
-        );
-    }
-}
+    return (
+        <Layout>
+            <h3>Campaign Show</h3>
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={10}>{renderCards()}</Grid.Column>
+                    <Grid.Column width={6}>
+                        <ContributeForm
+                            address={address}
+                            contractInstance={contractInstance}
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Link href={`/campaigns/${address}/requestHome`}>
+                            <Button primary>Voir les requests</Button>
+                        </Link>
+                        <Link href={`/campaigns/${address}/newreq`}>
+                            <Button primary>Retirer des fonds du projet</Button>
+                        </Link>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Layout>
+    );
+};
 
 export default CampaignShow;

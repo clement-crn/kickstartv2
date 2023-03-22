@@ -44,18 +44,44 @@ const RequestIndex = ({ address }) => {
     }, [address]);
 
     const onApprove = async (id) => {
-        const provider = new ethers.providers.JsonRpcProvider();
+        //const provider = new ethers.providers.JsonRpcProvider();
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // MetaMask requires requesting permission to connect users accounts
+        await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(address, MainAbi, signer);
-        await contract.approveRequest(id);
+        const campaign = new ethers.Contract(address, MainAbi, signer);
+
+        const account = await signer.getAddress();
+        const isApprover = await campaign.approvers(account);
+        if (!isApprover) {
+            console.error("You must be an approver to approve a request.");
+            return;
+        }
+
+        const gasLimit = await campaign.estimateGas.approveRequest(id);
+        const transaction = await campaign.approveRequest(id, { gasLimit });
+        await transaction.wait();
         router.push(`/campaigns/${address}/requestHome`);
     };
-    const onFinalize = async () => {
+
+    const onFinalize = async (id) => {
         try {
             const provider = new ethers.providers.JsonRpcProvider();
             const signer = provider.getSigner();
-            const contract = new ethers.Contract(address, MainAbi, signer);
-            await contract.finalizeRequest(id);
+            const campaign = new ethers.Contract(address, MainAbi, signer);
+
+            const account = await signer.getAddress();
+            const isApprover = await campaign.approvers(account);
+            if (!isApprover) {
+                console.error("You must be an approver to finalize a request.");
+                return;
+            }
+
+            const gasLimit = await campaign.estimateGas.finalizeRequest(id);
+            const transaction = await campaign.finalizeRequest(id, {
+                gasLimit,
+            });
+            await transaction.wait();
             router.push(`/campaigns/${address}/requestHome`);
         } catch (error) {
             console.error(error);
@@ -65,7 +91,6 @@ const RequestIndex = ({ address }) => {
     const createRequest = async () => {
         router.push(`/campaigns/${address}/requests/newreq`);
     };
-
     return (
         <Layout>
             <Header as="h3">Requêtes</Header>

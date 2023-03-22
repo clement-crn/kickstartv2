@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { MainAbi } from "../../../../backend/abis";
@@ -11,18 +11,54 @@ function CampaignForm() {
     const [recipient, setRecipient] = useState("");
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [managerAddress, setManagerAddress] = useState("");
+    const [provider, setProvider] = useState(null);
+    const [contractInstance, setContractInstance] = useState(null);
     const router = useRouter();
     const { address } = router.query;
 
-    const handleCreateRequest = async (event) => {
+    useEffect(() => {
+        if (!provider && window.ethereum) {
+            setProvider(new ethers.providers.Web3Provider(window.ethereum));
+        }
+    }, [provider]);
+
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            if (provider) {
+                const accounts = await provider.listAccounts();
+                setManagerAddress(accounts[0]);
+            }
+        };
+        fetchAddresses();
+    }, [provider]);
+
+    useEffect(() => {
+        if (address && provider && contractInstance === null) {
+            const contract = new ethers.Contract(address, MainAbi, provider);
+            setContractInstance(contract);
+        }
+    }, [address, provider, contractInstance]);
+
+    async function handleCreateRequest(event) {
         event.preventDefault();
         setLoading(true);
+        setErrorMessage("");
 
         try {
-            const provider = new ethers.providers.JsonRpcProvider();
+            // Check if the user is connected to their wallet
+            if (!window.ethereum || !window.ethereum.selectedAddress) {
+                throw new Error("Please connect your wallet");
+            }
+
+            // Connect to the user's Metamask wallet
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
+
+            // Create a new contract instance
             const contract = new ethers.Contract(address, MainAbi, signer);
 
+            // Create the request
             const gasLimit = 1000000;
             const transaction = await contract.createRequest(
                 description,
@@ -31,8 +67,8 @@ function CampaignForm() {
                 { gasLimit }
             );
 
+            // Wait for the transaction to be confirmed
             const receipt = await transaction.wait();
-            console.log("Transaction receipt: ", receipt);
 
             setLoading(false);
             router.push("/");
@@ -40,12 +76,7 @@ function CampaignForm() {
             setErrorMessage(error.message);
             setLoading(false);
         }
-    };
-
-    console.log("address:", address);
-    console.log("descripion:", address);
-    console.log("value:", value);
-    console.log("recipient:", recipient);
+    }
 
     return (
         <Layout>
@@ -75,12 +106,30 @@ function CampaignForm() {
                         onChange={(event) => setRecipient(event.target.value)}
                     />
                 </Form.Field>
-                <Button type="submit" disabled={loading}>
-                    {loading ? "Submitting..." : "Submit"}
+                {errorMessage && (
+                    <div
+                        className="ui error message"
+                        style={{ marginBottom: "10px" }}
+                    >
+                        <div className="header">Erreur</div>
+                        <p>{errorMessage}</p>
+                    </div>
+                )}
+                <Button
+                    primary
+                    type="submit"
+                    loading={loading}
+                    disabled={loading}
+                >
+                    Créer une demande
                 </Button>
-                {errorMessage && <p>{errorMessage}</p>}
+                <p>
+                    Exemple de recipient :
+                    0xdD2FD4581271e230360230F9337D5c0430Bf44C0
+                </p>
             </Form>
         </Layout>
     );
 }
+
 export default CampaignForm;

@@ -8,13 +8,13 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
 -ajout de comptes hardhat manuellement. Ils sont dans accounts.json et ajoutés via hardhat.config
 
 
-**lancer le noeud local**
+**1) lancer le noeud local**
     npx hardhat node 
     
-**deployer le script**
+**2) deployer le script**
     npx hardhat run --network localhost scripts/deploy.ts
 
-**lancer le serv web**
+**3) lancer le serv web**
     npm run dev
     
     

@@ -7,6 +7,8 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
 
 -ajout de comptes hardhat manuellement. Ils sont dans accounts.json et ajoutés via hardhat.config
 
+-abis isolés dans /backend/abis
+
 
 **1) lancer le noeud local**
 

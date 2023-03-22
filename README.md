@@ -22,7 +22,9 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
     
     
  *Fix en cours :
+ 
  -conversion des montants
+ 
  -cas particulier avec onApprove dans requestHome.js*
  
 

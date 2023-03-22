@@ -21,10 +21,9 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
     npm run dev
     
     
- *Fix en cours :
+ Fix en cours :
  
  -conversion des montants
- 
- -cas particulier avec onApprove dans requestHome.js*
+ -cas particulier avec onApprove dans requestHome.js
  
 

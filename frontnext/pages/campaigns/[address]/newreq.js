@@ -64,7 +64,7 @@ function CampaignForm() {
             );
 
             const receipt = await transaction.wait();
-
+            console.log(receipt);
             setLoading(false);
             router.push("/");
         } catch (error) {
@@ -86,7 +86,7 @@ function CampaignForm() {
                     />
                 </Form.Field>
                 <Form.Field>
-                    <label>Value:</label>
+                    <label>Valeur:</label>
                     <input
                         type="text"
                         value={value}
@@ -119,7 +119,7 @@ function CampaignForm() {
                     Créer une demande
                 </Button>
                 <p>
-                    Exemple de recipient :
+                    Exemple de recipient : <br></br>
                     0xdD2FD4581271e230360230F9337D5c0430Bf44C0
                 </p>
             </Form>

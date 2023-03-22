@@ -60,33 +60,29 @@ const CampaignShow = () => {
             {
                 header: manager,
                 meta: "Address of Manager",
-                description:
-                    "The manager created this campaign and can create requests to withdraw money",
+                description: "Manager du contrat",
                 style: { overflowWrap: "break-word" },
             },
             {
                 header: minimumContribution,
-                meta: "Minimum Contribution (wei)",
-                description:
-                    "You must contribute at least this much wei to become an approver",
+                meta: "Contribution minimum (wei)",
+                description: "Contribution minimum (wei) pour participer",
             },
             {
                 header: requestsCount,
-                meta: "Number of Requests",
+                meta: "Nombre de requetes",
                 description:
-                    "A request tries to withdraw money from the contract. Requests must be approved by approvers",
+                    "Requete = lorsque le manager veut retirer des fonds de la campagne. Les donnateurs peuvent donc voter pour accepter ou non",
             },
             {
                 header: approversCount,
-                meta: "Number of Approvers",
-                description:
-                    "Number of people who have already donated to this campaign",
+                meta: "Numbre de donateurs (approvers)",
+                description: "Nombre de donateurs",
             },
             {
                 header: balance,
                 meta: "Campaign Balance (ether)",
-                description:
-                    "The balance is how much money this campaign has left to spend.",
+                description: "Solde de la campagne",
             },
         ];
 

@@ -66,7 +66,8 @@ export default function App() {
                     </Card.Group>
                 </div>
                 <div className="index-right">
-                    {/*<button onClick={createCampaign}>Créer une campagne</button> */}
+                    {/*<button onClick={createCampaign}>Créer une campagne</button>
+                    "https://www.youtube.com/watch?v=gkTb9GP9lVI" */}
                 </div>
             </div>
         </Layout>

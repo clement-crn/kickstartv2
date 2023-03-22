@@ -30,11 +30,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/campaigns/[address]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/campaigns/[address].js"
-    ],
     "/campaigns/[address]/requestHome": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/clementciron/Documents/CODE/Solidity/kickstartv2/backend/contracts/Lock.sol": {
-      "lastModificationDate": 1679429781584,
-      "contentHash": "674cba42b51d73c9f22b88118b127ffe",
+      "lastModificationDate": 1679494407383,
+      "contentHash": "3dc1aac12d92be90994711f4ef3af72b",
       "sourceName": "contracts/Lock.sol",
       "solcConfig": {
         "version": "0.8.15",

@@ -3,47 +3,55 @@ import { Form, Input, Message, Button } from "semantic-ui-react";
 import { ethers } from "ethers";
 import { MainAbi } from "../../backend/abis";
 
-const ContributeForm = ({ address, contractInstance }) => {
-    const [contribution, setContribution] = useState("");
+const ContributeForm = ({ address }) => {
+    const [value, setValue] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    console.log("ContributeForm address:", address);
 
     const onSubmit = async (event) => {
         event.preventDefault();
+        const provider = new ethers.providers.JsonRpcProvider();
+
+        const signer = provider.getSigner();
+        const campaign = new ethers.Contract(address, MainAbi, signer);
+
         setLoading(true);
-        const value = ethers.utils.parseEther(contribution);
+        setErrorMessage("");
+
         try {
-            const transaction = await contractInstance.contribute({
-                value,
-                from: window.ethereum.selectedAddress,
+            const accounts = await provider.listAccounts();
+            await campaign.contribute({
+                value: ethers.utils.parseEther(value),
             });
-            const receipt = await transaction.wait();
-            console.log("Transaction receipt: ", receipt);
+            window.location.reload();
         } catch (err) {
-            console.log(err);
+            setErrorMessage(err.message);
         }
+
         setLoading(false);
+        setValue("");
     };
 
+    console.log("ContributeForm address:", address);
+
     return (
-        <div>
-            <h4>Faire une contribution</h4>
-            <Form onSubmit={onSubmit}>
-                <Form.Field>
-                    <label>Montant en ether:</label>
-                    <Input
-                        label="ether"
-                        labelPosition="right"
-                        value={contribution}
-                        onChange={(event) =>
-                            setContribution(event.target.value)
-                        }
-                    />
-                </Form.Field>
-                <Button loading={loading} primary>
-                    Contribuer!
-                </Button>
-            </Form>
-        </div>
+        <Form onSubmit={onSubmit} error={!!errorMessage}>
+            <Form.Field>
+                <label>Montant à déposer</label>
+                <Input
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
+                    label="ether"
+                    labelPosition="right"
+                />
+            </Form.Field>
+
+            <Message error header="Oops!" content={errorMessage} />
+            <Button primary loading={loading}>
+                Contribuer!
+            </Button>
+        </Form>
     );
 };
 

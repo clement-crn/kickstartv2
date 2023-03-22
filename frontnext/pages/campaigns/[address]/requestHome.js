@@ -106,7 +106,7 @@ const RequestIndex = ({ address }) => {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>ID</Table.HeaderCell>
-                        <Table.HeaderCell>Déscription</Table.HeaderCell>
+                        <Table.HeaderCell>Description</Table.HeaderCell>
                         <Table.HeaderCell>Montant</Table.HeaderCell>
                         <Table.HeaderCell>Receveur</Table.HeaderCell>
                         <Table.HeaderCell>Votes pour</Table.HeaderCell>

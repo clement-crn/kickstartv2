@@ -1,3 +1,4 @@
+ls
 const accounts = await ethers.getSigners(account[0])
 const accounts = await ethers.getSigners()
 .exit

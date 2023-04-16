@@ -41,4 +41,5 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
  
  -cas particulier avec onApprove dans requestHome.js
  
-
+## Le problème le plus courant
+Si le nonce est trop élevé, il suffit de réitinialiser les données de compte. Sur metamask: "paramètres" > "paramètres avancés" > "Effacer les données de l'onglet"

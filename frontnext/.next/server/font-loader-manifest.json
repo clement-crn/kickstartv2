@@ -1,7 +1,8 @@
 {
   "pages": {
+    "/campaigns/[address]": [],
     "/": [],
-    "/campaigns/[address]/requestHome": []
+    "/campaigns/[address]/newreq": []
   },
   "app": {}
 }

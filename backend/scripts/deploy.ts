@@ -15,7 +15,7 @@ async function main() {
 
     console.log("Deploying contract campaign with the account:", deployer.address);
 
-    const campaign = await ethers.getContractFactory("Campaign_contract");
+    const campaign = await ethers.getContractFactory("CampaignContract");
     const campaignContract = await campaign.deploy(0, "0x18Ce891b8871DC30dA4Af190aeAA76e08A4F0ec1");
 
 

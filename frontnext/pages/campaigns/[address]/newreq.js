@@ -73,6 +73,16 @@ function CampaignForm() {
         }
     }
 
+    console.log(
+        "Manager address: ",
+        managerAddress,
+        "Provider: ",
+        provider,
+        "Contract instance: ",
+        contractInstance
+    );
+    console.log("Provider: ", provider);
+    console.log("Contract instance: ", contractInstance);
     return (
         <Layout>
             <h3>Nouvelle requete</h3>
@@ -102,13 +112,7 @@ function CampaignForm() {
                     />
                 </Form.Field>
                 {errorMessage && (
-                    <div
-                        className="ui error message"
-                        style={{ marginBottom: "10px" }}
-                    >
-                        <div className="header">Erreur</div>
-                        <p>{errorMessage}</p>
-                    </div>
+                    <div className="ui negative message">{errorMessage}</div>
                 )}
                 <Button
                     primary

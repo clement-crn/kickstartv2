@@ -11,6 +11,7 @@ const RequestRow = ({
     campaign,
     children,
 }) => {
+    const router = useRouter();
     const { Row, Cell } = Table;
     const readyToFinalize = request.approvalCount > approversCount / 2;
 

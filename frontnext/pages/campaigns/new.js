@@ -35,11 +35,11 @@ const CampaignNew = () => {
 
     return (
         <Layout>
-            <h3>Create a Campaign</h3>
+            <h3>Créer une campagne de financement</h3>
 
             <Form onSubmit={onSubmit} error={!!errorMessage}>
                 <Form.Field>
-                    <label>Minimum Contribution</label>
+                    <label>Montant minimun pour participer</label>
                     <Input
                         label="wei"
                         labelPosition="right"
@@ -52,7 +52,7 @@ const CampaignNew = () => {
 
                 <Message error header="Oops!" content={errorMessage} />
                 <Button loading={loading} primary>
-                    Create!
+                    Créer!
                 </Button>
             </Form>
         </Layout>

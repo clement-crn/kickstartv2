@@ -10,7 +10,7 @@
         "name": "campaigns",
         "outputs": [
             {
-                "internalType": "contract Campaign_contract",
+                "internalType": "contract CampaignContract",
                 "name": "",
                 "type": "address"
             }
@@ -36,7 +36,7 @@
         "name": "getCampaigns",
         "outputs": [
             {
-                "internalType": "contract Campaign_contract[]",
+                "internalType": "contract CampaignContract[]",
                 "name": "",
                 "type": "address[]"
             }

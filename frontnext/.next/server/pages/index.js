@@ -676,7 +676,7 @@ module.exports = require("semantic-ui-react");
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('[{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"campaigns","outputs":[{"internalType":"contract Campaign_contract","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"minimum","type":"uint256"}],"name":"createCampaign","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getCampaigns","outputs":[{"internalType":"contract Campaign_contract[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"}]');
+module.exports = JSON.parse('[{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"campaigns","outputs":[{"internalType":"contract CampaignContract","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"minimum","type":"uint256"}],"name":"createCampaign","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getCampaigns","outputs":[{"internalType":"contract CampaignContract[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"}]');
 
 /***/ }),
 

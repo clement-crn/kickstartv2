@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { MainAbi } from "../../../backend/abis";
 import ContributeForm from "@/components/ContributeForm";
-import factory_instance from "@/../backend/factory";
+import factory_instance from "../../../backend/factory";
 
 const CampaignShow = () => {
     const router = useRouter();
@@ -18,8 +18,10 @@ const CampaignShow = () => {
     const [manager, setManager] = useState("");
     const [contractInstance, setContractInstance] = useState(null);
     const [currentAccount, setCurrentAccount] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         if (address && contractInstance === null) {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
@@ -27,7 +29,7 @@ const CampaignShow = () => {
             setContractInstance(contract);
 
             window.ethereum
-                .request({ method: "eth_accounts" })
+                .request({ method: "eth_requestAccounts" })
                 .then((accounts) => {
                     setCurrentAccount(accounts[0]);
                 });
@@ -37,25 +39,41 @@ const CampaignShow = () => {
     useEffect(() => {
         if (contractInstance) {
             const fetchData = async () => {
-                const [
-                    minimumContribution,
-                    balance,
-                    requestsCount,
-                    approversCount,
-                    manager,
-                ] = await contractInstance.getSummary();
+                try {
+                    const [
+                        minimumContribution,
+                        balance,
+                        requestsCount,
+                        approversCount,
+                        manager,
+                    ] = await contractInstance.getSummary();
 
-                setMinimumContribution(minimumContribution.toString());
-                setBalance(ethers.utils.formatEther(balance));
-                setRequestsCount(requestsCount.toString());
-                setApproversCount(approversCount.toString());
-                setManager(manager);
+                    setMinimumContribution(
+                        ethers.utils.formatEther(minimumContribution)
+                    );
+                    setBalance(ethers.utils.formatEther(balance));
+                    setRequestsCount(requestsCount.toString());
+                    setApproversCount(approversCount.toString());
+                    setManager(manager);
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    setLoading(false);
+                }
             };
             fetchData();
         }
     }, [contractInstance]);
 
     const renderCards = () => {
+        const cardsLoading = (
+            <p style={{ textAlign: "center", marginTop: "1rem" }}>CHARGEMENT</p>
+        );
+
+        if (loading) {
+            return cardsLoading;
+        }
+
         const items = [
             {
                 header: manager,
@@ -95,6 +113,7 @@ const CampaignShow = () => {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={10}>{renderCards()}</Grid.Column>
+
                     <Grid.Column width={6}>
                         <ContributeForm
                             address={address}

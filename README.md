@@ -16,6 +16,9 @@ l'argument address avec le hook useRooter() pour pouvoir l'utiliser plus tard
 
 -La v1 trichait en utilisant seulement le JsonRpcProvider de ethers pour toutes les transactions. Le site tournait avec seulement le manager pour vérifier si l'affichage des données était OK. Dans la v2, on peut jouer avec les comptes sur MetaMask.
 
+
+**0) Installer next dans /front et hardhat dans /back**
+
 ## Lancer le site
 
 **1) lancer le noeud local**

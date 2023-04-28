@@ -20,13 +20,9 @@
     npm run dev
 
 
-Fix en cours :
 
--conversion des montants
 
--cas particulier avec onApprove dans requestHome.js
-
-conseils du cryptochad :
+## conseils du cryptochad :
 
 -   Séparer les contrats en fichiers individuels /
 

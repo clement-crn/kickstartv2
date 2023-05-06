@@ -19,10 +19,18 @@
 
     npm run dev
 
+    
+    
+ ## Fix en cours :
+ 
+ -conversion des montants
+ 
+ -cas particulier avec onApprove dans requestHome.js
+ 
+## Le problème le plus courant
+Si le nonce est trop élevé, il suffit de réitinialiser les données de compte. Sur metamask: "paramètres" > "paramètres avancés" > "Effacer les données de l'onglet"
 
-
-
-## conseils du cryptochad :
+## conseils:
 
 -   Séparer les contrats en fichiers individuels /
 
@@ -37,15 +45,4 @@
 -   Respect styleguide : https://docs.soliditylang.org/en/v0.8.15/style-guide.html?highlight=layout
 
 -   Emettre des events pour chaque state update
-
-    
-    
- ## Fix en cours :
- 
- -conversion des montants
- 
- -cas particulier avec onApprove dans requestHome.js
- 
-## Le problème le plus courant
-Si le nonce est trop élevé, il suffit de réitinialiser les données de compte. Sur metamask: "paramètres" > "paramètres avancés" > "Effacer les données de l'onglet"
 
